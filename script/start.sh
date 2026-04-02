@@ -24,6 +24,10 @@ readonly BLUE='\033[0;34m'
 readonly BOLD='\033[1m'
 readonly NC='\033[0m'
 
+# Repository coordinates (change here when using another repository)
+readonly REPO_USER="kdinstall"
+readonly REPO_NAME="system-base"
+
 log_info() {
     echo -e "${GREEN}→${NC} $1"
 }
@@ -45,7 +49,7 @@ show_help() {
 oneliner-docker - 1行でDockerサーバ環境 + Goサンプル構築
 
 Usage:
-  curl -fsSL https://raw.githubusercontent.com/USER/REPO/master/script/start.sh | bash
+    curl -fsSL https://raw.githubusercontent.com/${REPO_USER}/${REPO_NAME}/master/script/start.sh | bash
   curl -fsSL ... | bash -s -- [-test] [--help]
 
 Options:
@@ -67,13 +71,6 @@ for arg in "$@"; do
     esac
 done
 
-# GitHub coordinates — set via env vars:
-#   curl -fsSL URL | REPO_USER=youruser REPO_NAME=yourrepo bash
-if [ -z "${REPO_USER}" ] || [ -z "${REPO_NAME}" ]; then
-    log_error "REPO_USER and REPO_NAME must be set."
-    echo "  curl -fsSL URL | REPO_USER=youruser REPO_NAME=yourrepo bash"
-    exit 1
-fi
 GITHUB_USER="${REPO_USER}"
 GITHUB_REPO="${REPO_NAME}"
 readonly GITHUB_USER GITHUB_REPO
