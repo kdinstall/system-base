@@ -1,5 +1,6 @@
 - hosts: localhost
   connection: local
+  become: true
 
   vars:
     app_name: go-sample
@@ -62,7 +63,7 @@
         group: "{{ app_group }}"
         mode: "0644"
         directory_mode: "0755"
-        register: go_project_result
+      register: go_project_result
 
     - name: Check app binary
       stat:

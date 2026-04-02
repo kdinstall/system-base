@@ -187,13 +187,32 @@ log_info "${filename} unarchived"
 # launch ansible
 for PLAYBOOK in "${PLAYBOOKS[@]}"; do
     log_step "Running Ansible playbook: ${PLAYBOOK}"
-    cd ${WORK_DIR}/${GITHUB_REPO}/playbooks/${PLAYBOOK}
-
+    
+    playbook_dir="${WORK_DIR}/${GITHUB_REPO}/playbooks/${PLAYBOOK}"
+    if [ ! -d "${playbook_dir}" ]; then
+        log_error "Playbook directory not found: ${playbook_dir}"
+        exit 1
+    fi
+    
+    cd "${playbook_dir}" || exit 1
+    
     if [ -f requirements.yml ]; then
-        ansible-galaxy install --role-file=requirements.yml
+        log_info "Installing Ansible galaxy requirements"
+        ansible-galaxy install --role-file=requirements.yml || exit 1
     fi
 
-    ansible-playbook -i localhost, main.yml
+    if [ ! -f main.yml ]; then
+        log_error "Playbook main.yml not found in ${playbook_dir}"
+        exit 1
+    fi
+
+    log_info "Executing ansible-playbook -i localhost, main.yml"
+    if ! ansible-playbook -i localhost, main.yml; then
+        log_error "Ansible playbook failed: ${PLAYBOOK}"
+        exit 1
+    fi
+    
+    log_info "${PLAYBOOK} playbook completed successfully"
 done
 
 log_step "Docker and Go sample environment setup complete"
