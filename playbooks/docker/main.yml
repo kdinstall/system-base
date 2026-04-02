@@ -1,0 +1,12 @@
+- hosts: localhost
+  connection: local
+
+  roles:
+    - geerlingguy.docker
+
+  tasks:
+    - name: Install minimal command
+      package:
+        name:
+          - zip
+          - unzip
