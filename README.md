@@ -69,6 +69,19 @@ curl -fsSL http://localhost:8080/docker/ping
 - `/healthz` は `{"status":"ok"}` を返します
 - `/docker/ping` は Go アプリから `docker version` 実行結果を返します
 
+### Webブラウザからのアクセス
+
+デプロイ完了後、Webブラウザから以下のURLでアクセスして確認できます。
+
+サーバのホスト名やIPアドレスが `example.com` または `192.168.1.100` の場合：
+
+- **ヘルスチェック:** http://example.com:8080/healthz または http://192.168.1.100:8080/healthz
+  - レスポンス例: `{"status":"ok"}`
+
+- **dockerコマンド実行結果確認:** http://example.com:8080/docker/ping または http://192.168.1.100:8080/docker/ping
+  - レスポンス例: Docker のバージョン情報を JSON で返します
+  - エラーの場合: `{"ok":false, "error":"エラーメッセージ"}`
+
 ## Goアプリの管理
 
 - Goアプリ本体は `playbooks/app/go-app` ディレクトリで管理します
