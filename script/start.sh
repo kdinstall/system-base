@@ -174,6 +174,7 @@ done
 # Get archive directory name
 destdir=$(tar tzf "${filepath}" | head -n 1)
 destdirname=$(basename "$destdir")
+log_info "Extracting archive: ${filename}"
 
 # Unarchive repository
 tar xzf "${filename}"
