@@ -62,10 +62,12 @@ systemctl status docker --no-pager
 systemctl status go-sample --no-pager
 curl -fsSL http://localhost:8080/healthz
 curl -fsSL http://localhost:8080/docker/ping
+curl -fsSL http://localhost:8080/go/version
 ```
 
 - `/healthz` は `{"status":"ok"}` を返します
 - `/docker/ping` は Go アプリから `docker version` 実行結果を返します
+- `/go/version` は Go アプリ実行バイナリのランタイムバージョン（例: `{"version":"go1.21.x"}`）を返します
 
 ### Webブラウザからのアクセス
 
@@ -79,6 +81,9 @@ curl -fsSL http://localhost:8080/docker/ping
 - **dockerコマンド実行結果確認:** http://example.com:8080/docker/ping または http://192.168.1.100:8080/docker/ping
   - レスポンス例: Docker のバージョン情報を JSON で返します
   - エラーの場合: `{"ok":false, "error":"エラーメッセージ"}`
+
+- **Goランタイムバージョン確認:** http://example.com:8080/go/version または http://192.168.1.100:8080/go/version
+  - レスポンス例: `{"version":"go1.21.x"}`
 
 ## Goアプリの管理
 

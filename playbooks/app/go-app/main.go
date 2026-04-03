@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"runtime"
 	"strings"
 	"time"
 )
@@ -19,6 +20,10 @@ type dockerPingResponse struct {
 	OK     bool   `json:"ok"`
 	Output string `json:"output,omitempty"`
 	Error  string `json:"error,omitempty"`
+}
+
+type goVersionResponse struct {
+	Version string `json:"version"`
 }
 
 func main() {
@@ -42,6 +47,10 @@ func main() {
 			OK:     true,
 			Output: output,
 		})
+	})
+
+	mux.HandleFunc("/go/version", func(w http.ResponseWriter, r *http.Request) {
+		writeJSON(w, http.StatusOK, goVersionResponse{Version: runtime.Version()})
 	})
 
 	addr := ":" + getEnv("APP_PORT", "8080")
